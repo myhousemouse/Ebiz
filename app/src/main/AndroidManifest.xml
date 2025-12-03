@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Ebiz">
+
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:label="Risk Manager"
+            android:theme="@style/Theme.Ebiz">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Ebiz" />
+
+        <activity
+            android:name=".NewProjectActivity"
+            android:exported="false"
+            android:label="새 프로젝트"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.Ebiz" />
+
+        <activity
+            android:name=".LoadingActivity"
+            android:exported="false"
+            android:label="분석 중"
+            android:parentActivityName=".NewProjectActivity"
+            android:theme="@style/Theme.Ebiz" />
+
+        <activity
+            android:name=".QuestionsActivity"
+            android:exported="false"
+            android:label="구체화 질문"
+            android:parentActivityName=".LoadingActivity"
+            android:theme="@style/Theme.Ebiz" />
+
+        <activity
+            android:name=".ReportActivity"
+            android:exported="false"
+            android:label="분석 결과"
+            android:parentActivityName=".QuestionsActivity"
+            android:theme="@style/Theme.Ebiz" />
+
+    </application>
+
+</manifest>

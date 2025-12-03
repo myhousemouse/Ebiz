@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Risk Manager 분석 중 로딩 화면 -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F9FAFB"
+    tools:context=".LoadingActivity">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:padding="18dp"
+        android:gravity="center_vertical"
+        android:elevation="2dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"
+            android:scaleType="fitCenter"
+            android:contentDescription="뒤로가기" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새 프로젝트"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="#0A0A0A"
+            android:layout_marginStart="14dp" />
+
+    </LinearLayout>
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp">
+
+        <!-- Loading Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="분석 중..."
+            android:textSize="16sp"
+            android:textColor="#0A0A0A"
+            android:layout_marginBottom="24dp"
+            android:gravity="center" />
+
+        <!-- Loading Animation -->
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="39dp">
+
+            <ProgressBar
+                android:id="@+id/loading_spinner"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:indeterminateDrawable="@drawable/loading_spinner"
+                android:indeterminate="true" />
+
+        </FrameLayout>
+
+        <!-- Loading Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="제공하신 정보를 바탕으로\n심층 분석을 진행하고 있습니다"
+            android:textSize="16sp"
+            android:textColor="#4A5568"
+            android:gravity="center"
+            android:layout_marginBottom="40dp"
+            android:lineSpacingExtra="4dp" />
+
+        <!-- Project Title Card -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/project_title_card_background"
+            android:padding="20dp"
+            android:layout_marginTop="40dp"
+            android:maxWidth="300dp">
+
+            <TextView
+                android:id="@+id/some_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&quot;프로젝트명&quot;"
+                android:textSize="14sp"
+                android:textColor="#4A5568"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

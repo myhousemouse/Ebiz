@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default Android Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Risk Manager Main Colors -->
+    <color name="bg_main">#F5F7F9</color>
+    <color name="gradient_light_start">#FEF2F2</color>
+    <color name="gradient_light_end">#FFFFFF</color>
+    <color name="border_main">#D1D5DC</color>
+    <color name="text_primary">#101828</color>
+    <color name="text_secondary">#4A5568</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_border">#F3F4F6</color>
+
+    <!-- Icon Colors -->
+    <color name="blue_icon">#1567FC</color>
+    <color name="red_icon">#E7000B</color>
+    <color name="green_icon">#00A63E</color>
+
+    <!-- Icon Background Colors -->
+    <color name="risk_blue_background">#DBEAFE</color>
+    <color name="risk_red_background">#FEE2E2</color>
+    <color name="risk_green_background">#DCFCE7</color>
+
+    <!-- Button Colors -->
+    <color name="button_primary">#FB2C36</color>
+    <color name="button_secondary">#FFFFFF</color>
+    <color name="button_text_primary">#FFFFFF</color>
+    <color name="button_text_secondary">#36415A</color>
+    <color name="btn_primary">#FB2C36</color>
+    <color name="btn_primary_hover">#E01E28</color>
+    <color name="btn_secondary">#FFFFFF</color>
+    <color name="btn_secondary_border">#E5E7EB</color>
+    <color name="btn_secondary_border_hover">#D1D5DB</color>
+
+    <!-- Risk Colors -->
+    <color name="risk_blue">#1567FC</color>
+    <color name="risk_red">#E7000B</color>
+    <color name="risk_green">#00A63E</color>
+
+    <!-- Additional Icon Background Colors -->
+    <color name="blue_icon_bg">#DBEAFE</color>
+    <color name="red_icon_bg">#FEE2E2</color>
+    <color name="green_icon_bg">#DCFCE7</color>
+
+    <!-- Additional Banner Color -->
+    <color name="info_banner_bg">#FEF9E7</color>
+
+    <!-- Additional Button Text Color -->
+    <color name="btn_secondary_text">#36415A</color>
+
+    <!-- Info Banner Colors -->
+    <color name="info_banner_background">#FEF9E7</color>
+    <color name="info_banner_border">#FEF08A</color>
+    <color name="info_banner_text">#89531A</color>
+
+    <!-- Logo Background -->
+    <color name="logo_bg_start">#FFE5E5</color>
+    <color name="logo_bg_end">#FFF5F5</color>
+
+    <!-- New Project Activity Colors -->
+    <color name="form_hint_color">#6A7282</color>
+    <color name="secondary_banner_bg">#EFF6FF</color>
+    <color name="secondary_banner_border">#BFDBFE</color>
+    <color name="secondary_banner_text">#1A3CB8</color>
+    <color name="input_hint_color">#7F0A0A0A</color>
+
+    <!-- Input Field States -->
+    <color name="input_normal">#D1D5DC</color>
+    <color name="input_focused">#FB2C36</color>
+
+    <!-- Button States -->
+    <color name="button_enabled">#FF3B4E</color>
+</resources>

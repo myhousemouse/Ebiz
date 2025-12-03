@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Risk Manager 홈화면 - CSS 디자인 구현 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    android:padding="20dp"
+    tools:context=".HomeActivity">
+
+    <!-- Mobile Screen Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/home_gradient_background"
+        android:padding="21dp">
+
+        <!-- Hero Section -->
+        <LinearLayout
+            android:id="@+id/hero_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="35dp">
+
+            <!-- Logo Container -->
+            <FrameLayout
+                android:id="@+id/logo_container"
+                android:layout_width="147dp"
+                android:layout_height="153dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/logo_background"
+                android:elevation="12dp">
+
+                <TextView
+                    android:id="@+id/logo_emoji"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:text="📊"
+                    android:textSize="48sp"
+                    android:gravity="center" />
+
+            </FrameLayout>
+
+            <!-- Main Title -->
+            <TextView
+                android:id="@+id/main_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Risk Manager"
+                android:textSize="21sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="실패를 전제로 분석하여\n비용 낭비를 줄이세요"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <!-- Features Section -->
+        <LinearLayout
+            android:id="@+id/features_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
+
+            <!-- Feature 1 -->
+            <LinearLayout
+                android:id="@+id/feature_card_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/feature_card_background"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/icon_background_red">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_analysis"
+                        app:tint="@color/red_icon"
+                        android:contentDescription="분석" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="최적 2개의 모델 제공"
+                        android:textSize="13.5sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="업종별 최적의 리스크  계산 기법 적용"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Feature 2 -->
+            <LinearLayout
+                android:id="@+id/feature_card_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/feature_card_background"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/icon_background_blue">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_ai_brain"
+                        app:tint="@color/blue_icon"
+                        android:contentDescription="AI" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AI 실행 조언"
+                        android:textSize="13.5sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="리스크를 낮추기 위한 구체적인 실행 방안 제공"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Feature 3 -->
+            <LinearLayout
+                android:id="@+id/feature_card_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/feature_card_background"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/icon_background_green">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_report"
+                        app:tint="@color/green_icon"
+                        android:contentDescription="보고서" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="보고서 &amp; 이력"
+                        android:textSize="13.5sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="분석 결과를 PDF로 저장하고 언제든 다시 확인"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- CTA Buttons -->
+        <LinearLayout
+            android:id="@+id/cta_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btn_new_project"
+                android:tag="button"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:text="새 프로젝트 분석하기"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_primary_background"
+                android:drawableStart="@drawable/ic_add_white"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:layout_marginBottom="9dp"
+                android:elevation="6dp" />
+
+            <Button
+                android:id="@+id/btn_view_history"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:text="분석 이력 보기"
+                android:textSize="12sp"
+                android:textColor="@color/btn_secondary_text"
+                android:background="@drawable/btn_secondary_background"
+                android:drawableStart="@drawable/ic_history"
+                android:drawablePadding="6dp"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <!-- Info Banner -->
+        <LinearLayout
+            android:id="@+id/info_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/info_banner_background"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💡"
+                android:textSize="16sp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="낙관 편향을 극복하세요\n통계적으로 70%의 프로젝트가 예상보다 높은 비용과 시간이 소요됩니다."
+                android:textSize="12sp"
+                android:textColor="@color/info_banner_text" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

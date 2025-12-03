@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Risk Manager</string>
+
+    <!-- Risk Manager Strings -->
+    <string name="main_title">Risk Manager</string>
+    <string name="subtitle">실패를 전제로 분석하여\n비용 낭비를 줄이세요</string>
+    <string name="feature_1_title">최적 2개의 모델 제공</string>
+    <string name="feature_1_desc">업종별 최적의 리스크 계산 기법 적용</string>
+    <string name="feature_2_title">AI 실행 조언</string>
+    <string name="feature_2_desc">리스크를 낮추기 위한 구체적인 실행 방안 제공</string>
+    <string name="feature_3_title">보고서 &amp; 이력</string>
+    <string name="feature_3_desc">분석 결과를 PDF로 저장하고 언제든 다시 확인</string>
+    <string name="btn_new_project">새 프로젝트 분석하기</string>
+    <string name="btn_view_history">분석 이력 보기</string>
+    <string name="info_banner_title">낙관 편향을 극복하세요</string>
+    <string name="info_banner_desc">통계적으로 70%의 프로젝트가 예상보다 높은 비용과 시간이 소요됩니다.</string>
+</resources>

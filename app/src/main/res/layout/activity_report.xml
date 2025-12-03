@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Risk Manager 분석 결과 화면 -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9FAFB"
+    android:fillViewport="true"
+    tools:context=".ReportActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="19dp"
+        android:paddingTop="28dp">
+
+        <!-- Page Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="분석 완료"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:textColor="#0A0A0A"
+            android:layout_marginBottom="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="최종 리스크 분석 결과입니다"
+            android:textSize="16sp"
+            android:textColor="#4A5568"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 분석 대상 Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/report_card_background"
+            android:padding="21dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="분석 대상"
+                android:textSize="16sp"
+                android:textColor="#0A0A0A"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/project_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로젝트명 로딩 중..."
+                android:textSize="14sp"
+                android:textColor="#4A5568"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+
+        <!-- RPN 위험도 Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/report_card_background"
+            android:padding="21dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RPN 위험도"
+                android:textSize="16sp"
+                android:textColor="#0A0A0A"
+                android:layout_marginBottom="8dp" />
+
+            <!-- 위험도 차트 -->
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="20dp">
+
+                <!-- SVG 차트 영역 - android:id="@+id/svg" -->
+                <ProgressBar
+                    android:id="@+id/svg"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/circular_progress_bar" />
+
+                <!-- 위험도 점수 - android:id="@+id/some_id" -->
+                <TextView
+                    android:id="@+id/some_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textSize="44sp"
+                    android:textColor="#0A0A0A"
+                    android:gravity="center" />
+
+            </RelativeLayout>
+
+            <!-- RPN 세부 정보 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rpn_details_background"
+                android:padding="16dp"
+                android:layout_marginTop="20dp">
+
+                <!-- 심각도 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="심각도 (S)"
+                        android:textSize="14sp"
+                        android:textColor="#4A5568" />
+
+                    <TextView
+                        android:id="@+id/severity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textColor="#0A0A0A" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E5E7EB" />
+
+                <!-- 발생도 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="발생도 (O)"
+                        android:textSize="14sp"
+                        android:textColor="#4A5568" />
+
+                    <TextView
+                        android:id="@+id/occurrence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textColor="#0A0A0A" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E5E7EB" />
+
+                <!-- 검출도 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="검출도 (D)"
+                        android:textSize="14sp"
+                        android:textColor="#4A5568" />
+
+                    <TextView
+                        android:id="@+id/detection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textColor="#0A0A0A" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="총 RPN 점수는 100점 만점으로 환산되었습니다."
+                android:textSize="12sp"
+                android:textColor="#9CA3AF"
+                android:gravity="center"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+
+        <!-- 현금 손실액 시뮬레이션 Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/report_card_background"
+            android:padding="21dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💸 현금 손실액 시뮬레이션"
+                android:textSize="16sp"
+                android:textColor="#0A0A0A"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RPN 점수를 기반으로 추산된 예상 금전적 손실액입니다."
+                android:textSize="14sp"
+                android:textColor="#4A5568"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/total_loss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₩0"
+                android:textSize="28sp"
+                android:textColor="#FF3B4E"
+                android:layout_marginVertical="8dp" />
+
+            <!-- 비용 분류 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+
+                <!-- 시간 투입 비용 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/cost_item_background"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⏳"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="시간 투입 비용 (30%)"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A0A0A" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_time"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:progress="30"
+                        android:max="100"
+                        android:progressDrawable="@drawable/cost_progress_bar" />
+
+                </LinearLayout>
+
+                <!-- 직접 투자비 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/cost_item_background"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💸"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="직접 투자비 (25%)"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A0A0A" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_capex"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:progress="25"
+                        android:max="100"
+                        android:progressDrawable="@drawable/cost_progress_bar" />
+
+                </LinearLayout>
+
+                <!-- 인력/운영비 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/cost_item_background"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="👥"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="인력/운영비 (25%)"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A0A0A" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_opex"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:progress="25"
+                        android:max="100"
+                        android:progressDrawable="@drawable/cost_progress_bar" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- AI 전문가 조언 Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/report_card_background"
+            android:padding="21dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🤖 AI 전문가 조언 및 실행 계획"
+                android:textSize="16sp"
+                android:textColor="#0A0A0A"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/ai_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AI 분석 결과를 불러오는 중..."
+                android:textSize="14sp"
+                android:textColor="#4A5568"
+                android:layout_marginBottom="24dp" />
+
+            <!-- 실행 계획 단계 -->
+            <LinearLayout
+                android:id="@+id/action_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+        <!-- 외부 연계 Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/external_link_card_background"
+            android:padding="21dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="창업지원센터 연결하기"
+                android:textSize="16sp"
+                android:textColor="#0A0A0A"
+                android:gravity="start" />
+
+        </LinearLayout>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="7dp"
+                android:text="저장"
+                android:textSize="16sp"
+                android:textColor="#36415A"
+                android:background="@drawable/btn_secondary_report"
+                android:drawableStart="@drawable/ic_save"
+                android:drawablePadding="8dp"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="7dp"
+                android:text="새로운 분석 시작"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_primary_report" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
