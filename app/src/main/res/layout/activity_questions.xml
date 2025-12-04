@@ -52,11 +52,26 @@
         android:layout_weight="1"
         android:fillViewport="false">
 
+        <!-- wrapper layout: ScrollView는 하나의 자식만 허용합니다 -->
         <LinearLayout
-            android:id="@+id/questionsContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- SVG preview을 위한 WebView 플레이스홀더: Activity에서 svg 문자열을 data URL로 로드하세요. -->
+            <WebView
+                android:id="@+id/svgPreview"
+                android:layout_width="match_parent"
+                android:layout_height="777dp"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:id="@+id/questionsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
 
     </ScrollView>
 

@@ -1,106 +1,160 @@
 package com.ebusiness.ebiz;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-/**
- * 분석 중 로딩 화면
- * 프로젝트 정보를 분석하는 동안 보여지는 로딩 화면
- */
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoadingActivity extends AppCompatActivity {
     private static final String TAG = "LoadingActivity";
 
-    // UI Components
-    private ImageButton btnBack;
-    private TextView projectNameDisplay; // some_id에 해당하는 TextView
+    // Backend API Configuration
+    private static final String BASE_URL = "https://ebizapi.zeabur.app";
+    private static final String QUESTIONS_ENDPOINT = "/api/v1/analyze/questions";
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    // Loading simulation
+    // HTTP Client
+    private OkHttpClient httpClient;
+
+    // Session data from previous activity
+    private String sessionId;
+    private String projectTitle;
+    private String projectDescription;
+    private String projectBudget;
+
     private Handler loadingHandler;
     private Runnable loadingRunnable;
-    private static final int LOADING_DURATION_MIN = 3000; // 3초
-    private static final int LOADING_DURATION_MAX = 5000; // 5초
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        initializeViews();
-        setupClickListeners();
-        displayProjectInfo();
-        startLoadingSimulation();
-    }
+        initializeHttpClient();
 
-    private void initializeViews() {
-        btnBack = findViewById(R.id.btn_back);
-        projectNameDisplay = findViewById(R.id.some_id); // android:id="@+id/some_id"
-    }
+        // read session and project data
+        extractSessionData();
 
-    private void setupClickListeners() {
-        // 뒤로 가기 버튼
-        btnBack.setOnClickListener(v -> {
-            // 로딩 중단하고 이전 화면으로 돌아가기
-            if (loadingHandler != null && loadingRunnable != null) {
-                loadingHandler.removeCallbacks(loadingRunnable);
-            }
-            finish();
-        });
-    }
-
-    private void displayProjectInfo() {
-        // Intent에서 프로젝트 정보 가져오기
-        Intent intent = getIntent();
-        String projectTitle = intent.getStringExtra("project_title");
-
-        // android:id="@+id/some_id"에 프로젝트명 표시
-        if (projectTitle != null && !projectTitle.isEmpty()) {
-            projectNameDisplay.setText("\"" + projectTitle + "\"");
+        // If we have a sessionId, start questions API call
+        if (sessionId != null && !sessionId.isEmpty()) {
+            startQuestionsApiCall();
         } else {
-            projectNameDisplay.setText("\"프로젝트명\"");
+            Toast.makeText(this, "세션 ID가 없습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "No session_id available after intent and prefs fallback");
+            finish();
         }
     }
 
-    private void startLoadingSimulation() {
-        // 3-5초 후 다음 화면으로 이동 (실제로는 API 호출 완료 시)
-        int loadingDuration = LOADING_DURATION_MIN +
-            (int) (Math.random() * (LOADING_DURATION_MAX - LOADING_DURATION_MIN));
-
-        loadingHandler = new Handler();
-        loadingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                onLoadingComplete();
-            }
-        };
-
-        loadingHandler.postDelayed(loadingRunnable, loadingDuration);
+    private void initializeHttpClient() {
+        httpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
     }
 
-    private void onLoadingComplete() {
-        // AI 질문 화면으로 이동
-        Intent intent = new Intent(this, QuestionsActivity.class);
+    private void extractSessionData() {
+        Intent intent = getIntent();
+        sessionId = intent.getStringExtra("session_id");
+        projectTitle = intent.getStringExtra("project_title");
+        projectDescription = intent.getStringExtra("project_description");
+        projectBudget = intent.getStringExtra("project_budget");
 
-        // 프로젝트 정보 전달
-        intent.putExtra("project_title", getIntent().getStringExtra("project_title"));
-        intent.putExtra("project_description", getIntent().getStringExtra("project_description"));
-        intent.putExtra("project_budget", getIntent().getStringExtra("project_budget"));
+        if (sessionId == null || sessionId.isEmpty()) {
+            // fallback to SharedPreferences
+            SharedPreferences prefs = getSharedPreferences("ebiz_prefs", MODE_PRIVATE);
+            sessionId = prefs.getString("session_id", null);
+            if (projectTitle == null) projectTitle = prefs.getString("project_title", null);
+            if (projectDescription == null) projectDescription = prefs.getString("project_description", null);
+            if (projectBudget == null) projectBudget = prefs.getString("project_budget", null);
+        }
 
-        startActivity(intent);
+        Log.d(TAG, "Session ID: " + sessionId);
+        Log.d(TAG, "Project Title: " + projectTitle);
+    }
 
-        // 부드러운 전환 애니메이션
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    private void startQuestionsApiCall() {
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("session_id", sessionId);
 
-        finish();
+            RequestBody body = RequestBody.create(requestBody.toString(), JSON);
+            String fullUrl = BASE_URL + QUESTIONS_ENDPOINT;
+
+            Request request = new Request.Builder()
+                    .url(fullUrl)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Accept", "application/json")
+                    .addHeader("User-Agent", "RiskManager-Android/1.0")
+                    .build();
+
+            httpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "Questions API request failed", e);
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoadingActivity.this, "질문 생성 중 네트워크 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                        finish();
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseBody = response.body() != null ? response.body().string() : "";
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, "Questions API response success: " + responseBody);
+
+                        // pass raw response to QuestionsActivity
+                        Intent intent = new Intent(LoadingActivity.this, QuestionsActivity.class);
+                        intent.putExtra("session_id", sessionId);
+                        intent.putExtra("questions_response", responseBody);
+                        intent.putExtra("project_title", projectTitle);
+                        intent.putExtra("project_description", projectDescription);
+                        intent.putExtra("project_budget", projectBudget);
+
+                        runOnUiThread(() -> {
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+                        });
+
+                    } else {
+                        Log.e(TAG, "Questions API failed with code: " + response.code() + ", response: " + responseBody);
+                        runOnUiThread(() -> {
+                            Toast.makeText(LoadingActivity.this, "서버에서 질문 생성에 실패했습니다. (코드: " + response.code() + ")", Toast.LENGTH_LONG).show();
+                            finish();
+                        });
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            Log.e(TAG, "JSON creation error", e);
+            Toast.makeText(this, "요청 생성 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 핸들러 정리
         if (loadingHandler != null && loadingRunnable != null) {
             loadingHandler.removeCallbacks(loadingRunnable);
         }

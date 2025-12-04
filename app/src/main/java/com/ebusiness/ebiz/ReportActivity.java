@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 분석 결과 화면 (report.html 구현)
@@ -70,7 +75,7 @@ public class ReportActivity extends AppCompatActivity {
 
         // 새로운 분석 시작 버튼
         newAnalysisButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
@@ -87,12 +92,80 @@ public class ReportActivity extends AppCompatActivity {
             projectName.setText("\"" + projectTitle + "\"");
         }
 
-        // TODO: 실제 구현에서는 백엔드 API 호출
-        // String sessionId = intent.getStringExtra("session_id");
-        // fetchAnalysisResultFromAPI(sessionId);
+        String reportResponse = intent.getStringExtra("report_response");
+        if (reportResponse != null && !reportResponse.isEmpty()) {
+            try {
+                JSONObject jsonResponse = new JSONObject(reportResponse);
+                MockAnalysisResult analysisResult = parseApiResponse(jsonResponse);
+                renderAnalysisResult(analysisResult);
+            } catch (JSONException e) {
+                Log.e(TAG, "JSON 파싱 에러: " + e.getMessage());
+                Toast.makeText(ReportActivity.this, "데이터 파싱 에러가 발생했습니다. Mock 데이터를 사용합니다.", Toast.LENGTH_SHORT).show();
+                useMockData();
+            }
+        } else {
+            Log.w(TAG, "Report data not found, using mock data");
+            useMockData();
+        }
+    }
 
-        // 현재는 Mock 데이터 사용
-        useMockData();
+    // 백엔드 API 응답을 내부 데이터 형식으로 변환
+    private MockAnalysisResult parseApiResponse(JSONObject jsonResponse) throws JSONException {
+        MockAnalysisResult data = new MockAnalysisResult();
+
+        // 기본 정보
+        data.businessName = jsonResponse.optString("business_name", "분석 대상");
+        data.overallRiskScore = jsonResponse.optDouble("overall_risk_score", 0.0);
+
+        // method_results에서 첫 번째 위험 항목의 OSD 값 추출
+        JSONArray methodResults = jsonResponse.optJSONArray("method_results");
+        if (methodResults != null && methodResults.length() > 0) {
+            JSONObject firstMethod = methodResults.getJSONObject(0);
+            JSONArray osdRisks = firstMethod.optJSONArray("osd_risks");
+
+            if (osdRisks != null && osdRisks.length() > 0) {
+                JSONObject firstRisk = osdRisks.getJSONObject(0);
+                data.occurrence = firstRisk.optInt("occurrence", 0);
+                data.severity = firstRisk.optInt("severity", 0);
+                data.detection = firstRisk.optInt("detection", 0);
+            }
+        }
+
+        // 현금 손실 분석
+        JSONObject cashLossAnalysis = jsonResponse.optJSONObject("cash_loss_analysis");
+        if (cashLossAnalysis != null) {
+            data.totalExpectedLoss = cashLossAnalysis.optInt("total_expected_loss", 0);
+
+            JSONObject costBreakdown = cashLossAnalysis.optJSONObject("cost_breakdown");
+            if (costBreakdown != null) {
+                JSONObject details = costBreakdown.optJSONObject("details");
+                if (details != null) {
+                    data.timeCost = details.optInt("time_cost", 0);
+                    data.directInvestment = details.optInt("direct_investment", 0);
+                    data.personnelCost = details.optInt("personnel_cost", 0);
+                }
+            }
+        }
+
+        // AI 추천사항
+        data.executiveSummary = jsonResponse.optString("executive_summary", "분석 결과를 확인할 수 없습니다.");
+
+        JSONArray aiRecommendations = jsonResponse.optJSONArray("ai_recommendations");
+        if (aiRecommendations != null) {
+            String[] recommendations = new String[aiRecommendations.length()];
+            for (int i = 0; i < aiRecommendations.length(); i++) {
+                JSONObject recommendation = aiRecommendations.getJSONObject(i);
+                String action = recommendation.optString("action", "");
+                String impact = recommendation.optString("expected_impact", "");
+                recommendations[i] = action + " - " + impact;
+            }
+            data.aiRecommendations = recommendations;
+        } else {
+            // 기본값 설정
+            data.aiRecommendations = new String[]{"분석 결과를 기반으로 한 추천사항이 없습니다."};
+        }
+
+        return data;
     }
 
     private void useMockData() {
@@ -116,9 +189,9 @@ public class ReportActivity extends AppCompatActivity {
 
         // AI 추천사항
         data.aiRecommendations = new String[]{
-            "1단계: 핵심 기능 MVP 개발 - 3개월 내 기본 다이어트 플래너 출시",
-            "2단계: 사용자 피드백 수집 - 베타 테스터 100명 확보 및 개선",
-            "3단계: AI 기능 고도화 - 맞춤형 추천 알고리즘 개발 착수"
+                "1단계: 핵심 기능 MVP 개발 - 3개월 내 기본 다이어트 플래너 출시",
+                "2단계: 사용자 피드백 수집 - 베타 테스터 100명 확보 및 개선",
+                "3단계: AI 기능 고도화 - 맞춤형 추천 알고리즘 개발 착수"
         };
 
         return data;
@@ -145,13 +218,15 @@ public class ReportActivity extends AppCompatActivity {
         // 5. 비용 분류 프로그레스 바 애니메이션
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            int timePercent = (int) ((double) data.timeCost / data.totalExpectedLoss * 100);
-            int capexPercent = (int) ((double) data.directInvestment / data.totalExpectedLoss * 100);
-            int opexPercent = (int) ((double) data.personnelCost / data.totalExpectedLoss * 100);
+            if (data.totalExpectedLoss > 0) {
+                int timePercent = (int) ((double) data.timeCost / data.totalExpectedLoss * 100);
+                int capexPercent = (int) ((double) data.directInvestment / data.totalExpectedLoss * 100);
+                int opexPercent = (int) ((double) data.personnelCost / data.totalExpectedLoss * 100);
 
-            ObjectAnimator.ofInt(progressTime, "progress", 0, timePercent).setDuration(1000).start();
-            ObjectAnimator.ofInt(progressCapex, "progress", 0, capexPercent).setDuration(1000).start();
-            ObjectAnimator.ofInt(progressOpex, "progress", 0, opexPercent).setDuration(1000).start();
+                ObjectAnimator.ofInt(progressTime, "progress", 0, timePercent).setDuration(1000).start();
+                ObjectAnimator.ofInt(progressCapex, "progress", 0, capexPercent).setDuration(1000).start();
+                ObjectAnimator.ofInt(progressOpex, "progress", 0, opexPercent).setDuration(1000).start();
+            }
         }, 300);
 
         // 6. AI 전문가 조언 표시 (ai_recommendations → AI 조언)
